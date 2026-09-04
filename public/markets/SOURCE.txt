@@ -1,0 +1,7 @@
+Dibangkitkan oleh scripts/make-market-art.mjs dari medan `glyph` tiap event
+dan market di src/lib/markets.ts. Jalankan ulang skripnya setelah menambah,
+mengganti, atau menghapus slug maupun glyph.
+
+Sebagian gambar memakai artwork Twemoji, (c) Twitter/X dan kontributornya,
+berlisensi CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/).
+Berkas aslinya di-vendor ke scripts/emoji/.

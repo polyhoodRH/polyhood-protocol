@@ -1,0 +1,274 @@
+@import "tailwindcss";
+
+/* ===========================================================================
+ * TOKEN WARNA
+ * Basis gelap kebiruan, aksen hijau Robinhood Chain. Semua komponen membaca
+ * variabel ini — tidak ada hex yang ditulis langsung di JSX.
+ * ======================================================================== */
+:root {
+  /* Basis navy mengikuti latar sampul brand (#040308–#07080c), bukan abu netral. */
+  --bg: #0a0d14;
+  --bg-raised: #0e131c;
+  --surface: #121824;
+  --surface-2: #18202e;
+  --surface-3: #212b3c;
+  --border: #1c2432;
+  --border-strong: #2a3547;
+
+  --text: #e5e9f0;
+  --text-2: #8c98ac;
+  --text-3: #5d6980;
+
+  /* Biru brand diambil dari piksel logo: #2f5cff.
+   * `--brand-solid` untuk bidang terisi, `--brand` versi lebih terang untuk
+   * teks dan ikon — #2f5cff terlalu gelap untuk dibaca di atas latar navy. */
+  --brand: #5b82ff;
+  --brand-solid: #2f5cff;
+  --brand-dim: #2449d6;
+  --brand-soft: rgba(47, 92, 255, 0.14);
+
+  --yes: #2fb673;
+  --yes-soft: rgba(47, 182, 115, 0.13);
+  --no: #e04a5e;
+  --no-soft: rgba(224, 74, 94, 0.13);
+  --live: #f0563d;
+
+  --shell: 1304px;
+  --radius: 12px;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-raised: var(--bg-raised);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-ink: var(--text);
+  --color-ink-2: var(--text-2);
+  --color-ink-3: var(--text-3);
+  --color-brand: var(--brand);
+  --color-brand-solid: var(--brand-solid);
+  --color-brand-dim: var(--brand-dim);
+  --color-yes: var(--yes);
+  --color-no: var(--no);
+  --color-live: var(--live);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, monospace;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "liga" 1, "calt" 1, "cv11" 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--brand-soft);
+  color: var(--text);
+}
+
+/* Batang gulir tipis; papan pasar penuh dengan daftar yang bisa digulir
+ * mendatar dan batang tebal bawaan memakan tinggi kartunya. */
+.rail {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+@layer components {
+  .shell {
+    width: 100%;
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding-inline: 16px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .card-hover {
+    transition: border-color 0.16s ease, background-color 0.16s ease;
+  }
+  .card-hover:hover {
+    border-color: var(--border-strong);
+    background: var(--surface-2);
+  }
+
+  /* Tombol Yes/No kecil di baris hasil. Warnanya lembut sampai disentuh —
+   * kalau penuh warna sejak awal, satu kartu dengan enam baris jadi berisik. */
+  .chip-yes,
+  .chip-no {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.25;
+    transition: background-color 0.14s ease, color 0.14s ease;
+  }
+  .chip-yes {
+    background: var(--yes-soft);
+    color: var(--yes);
+  }
+  .chip-yes:hover {
+    background: var(--yes);
+    color: #06130c;
+  }
+  .chip-no {
+    background: var(--no-soft);
+    color: var(--no);
+  }
+  .chip-no:hover {
+    background: var(--no);
+    color: #1a0508;
+  }
+
+  /* Tombol besar dua sisi (Up/Down, tim kiri/kanan). */
+  .side {
+    flex: 1;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.14s ease, color 0.14s ease;
+  }
+  .side-yes {
+    background: var(--yes-soft);
+    color: var(--yes);
+  }
+  .side-yes:hover {
+    background: var(--yes);
+    color: #06130c;
+  }
+  .side-no {
+    background: var(--no-soft);
+    color: var(--no);
+  }
+  .side-no:hover {
+    background: var(--no);
+    color: #1a0508;
+  }
+
+  /* Tombol sisi bertim: warnanya diambil dari crest tim lewat --tint, bukan
+   * dari hijau/merah — tidak ada tim yang berarti "tidak". */
+  .side-team {
+    background: color-mix(in srgb, var(--tint) 15%, transparent);
+    color: var(--tint);
+  }
+  .side-team:hover {
+    background: var(--tint);
+    color: #0b0f13;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-2);
+    white-space: nowrap;
+    transition: background-color 0.14s ease, color 0.14s ease;
+  }
+  .pill:hover {
+    background: var(--surface-2);
+    color: var(--text);
+  }
+  .pill-on {
+    background: var(--brand-soft);
+    color: var(--brand);
+  }
+  .pill-on:hover {
+    background: var(--brand-soft);
+    color: var(--brand);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 36px;
+    padding-inline: 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+  }
+  .btn-brand {
+    background: var(--brand-solid);
+    color: #fff;
+  }
+  .btn-brand:hover {
+    background: var(--brand-dim);
+  }
+  .btn-ghost {
+    color: var(--text-2);
+  }
+  .btn-ghost:hover {
+    background: var(--surface-2);
+    color: var(--text);
+  }
+  .btn-line {
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+  }
+  .btn-line:hover {
+    background: var(--surface-2);
+  }
+
+  .num {
+    font-family: var(--font-mono-face), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .dot-live {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--live);
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .dot-live {
+    animation: none;
+  }
+}
